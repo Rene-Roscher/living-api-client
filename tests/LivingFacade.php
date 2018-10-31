@@ -17,7 +17,7 @@ class LivingFacade
      */
     public static function client()
     {
-        return new Living('XXXX', 'XXXX', 1);
+        return null;
     }
 
 }

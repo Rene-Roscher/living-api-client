@@ -11,6 +11,7 @@ namespace Living;
 
 use GuzzleHttp\Client;
 use Living\Manager\DDosManager;
+use Living\Manager\PXEManager;
 
 class Living
 {
@@ -35,7 +36,7 @@ class Living
         $this->installerApiToken = $installerApiToken;
         $this->installerResellerId = $installerResellerId;
         $this->uriDdosApi = 'https://ddos.living-bots.net/api/alerts?api_token='.$ddosApiToken;
-        $this->uriInstallerApi = 'https://rootserver.living-bots.net/api/reseller/kvmInstallation?resellerId='.$installerResellerId.'&token='.$installerApiToken*;
+        $this->uriInstallerApi = 'https://rootserver.living-bots.net/api/reseller/kvmInstallation?resellerId='.$installerResellerId.'&token='.$installerApiToken;
         $this->httpClient = new Client([
             'allow_redirects' => false,
             'timeout' => 120
@@ -118,6 +119,14 @@ class Living
     }
 
     /**
+     * @return DDosManager
+     */
+    public function getPXEManager() : PXEManager
+    {
+        return new PXEManager($this);
+    }
+
+    /**
      * @param $response
      * @return mixed
      */
@@ -148,6 +157,54 @@ class Living
         }
 
         return $array;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDdosApiToken()
+    {
+        return $this->ddosApiToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInstallerApiToken()
+    {
+        return $this->installerApiToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUriDdosApi(): string
+    {
+        return $this->uriDdosApi;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUriInstallerApi(): string
+    {
+        return $this->uriInstallerApi;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInstallerResellerId()
+    {
+        return $this->installerResellerId;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getHttpClient(): Client
+    {
+        return $this->httpClient;
     }
 
 }

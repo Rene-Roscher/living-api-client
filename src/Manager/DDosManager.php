@@ -14,23 +14,40 @@ use Living\Living;
 class DDosManager
 {
 
-    /**
-     * @var Ph24
-     */
     private $living;
 
-    /**
-     * Payment constructor.
-     * @param Ph24 $ph24
-     */
     public function __construct(Living $living)
     {
         $this->living = $living;
     }
 
-    public function get()
+    public function getAll()
     {
-        return $this->living->get([], '');
+        return $this->living->post([], '', $this->living->getUriDdosApi());
+    }
+
+    public function getFilterDate($start, $end)
+    {
+        $obj = new \ArrayObject(array());
+
+        foreach ($this->getAll() as $item => $value) {
+            if($value->duration_start >= $start && $value->duration_stop <= $end) {
+                $obj->append($value);
+            }
+        }
+        return $obj;
+    }
+
+    public function getFilterAddress($ip)
+    {
+        $obj = new \ArrayObject(array());
+
+        foreach ($this->getAll() as $item => $value) {
+            if($value->resource_ip == $ip) {
+                $obj->append($value);
+            }
+        }
+        return $obj;
     }
 
 }
