@@ -1,12 +1,12 @@
 {
     "name": "rene-roscher/living-api-client",
-    "description": "A full-featured implementation of the RestApi JsonApi.",
+    "description": "A full-featured implementation of the Json Api.",
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": ">=6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.0"
+        "phpunit/phpunit": "^7.0"
     },
     "license": "MIT",
     "authors": [

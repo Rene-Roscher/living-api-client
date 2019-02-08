@@ -18,6 +18,7 @@ class Living
 
     private $ddosApiToken;
     private $installerApiToken;
+	private $macAddressPrefix;
 
     private $uriDdosApi;
     private $uriInstallerApi;
@@ -29,8 +30,9 @@ class Living
      * @param $ddosApiToken
      * @param $installerApiToken
      * @param $installerResellerId
+	 * @param $macAddressPrefix
      */
-    public function __construct($ddosApiToken, $installerApiToken, $installerResellerId)
+    public function __construct($ddosApiToken, $installerApiToken, $installerResellerId, $macAddressPrefix)
     {
         $this->ddosApiToken = $ddosApiToken;
         $this->installerApiToken = $installerApiToken;
@@ -41,6 +43,7 @@ class Living
             'allow_redirects' => false,
             'timeout' => 120
         ]);
+		$this->macAddressPrefix = $macAddressPrefix;
     }
 
     /**
@@ -130,7 +133,7 @@ class Living
      * @param $response
      * @return mixed
      */
-    private function request($response)
+    public function request($response)
     {
         $response = $response->getBody()->__toString();
         $result = json_decode($response);
@@ -173,6 +176,14 @@ class Living
     public function getInstallerApiToken()
     {
         return $this->installerApiToken;
+    }
+
+	/**
+     * @return string
+     */
+    public function getMacAddressPrefix(): string
+    {
+        return $this->macAddressPrefix;
     }
 
     /**

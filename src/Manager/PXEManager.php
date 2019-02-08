@@ -9,6 +9,7 @@
 namespace Living\Manager;
 
 
+use GuzzleHttp\RequestOptions;
 use Living\Living;
 
 class PXEManager
@@ -36,11 +37,13 @@ class PXEManager
     public function create($macAddress, $ipAddress, $hostName, $osTemplate, $rootPassword)
     {
         return $this->living->post([
-            'macAddress' => $macAddress,
-            'ipAddress' => $ipAddress,
-            'hostName' => $hostName,
-            'osTemplate' => $osTemplate,
-            'rootPassword' => $rootPassword
+            RequestOptions::JSON => [
+                'macAddress' => $macAddress,
+                'ipAddress' => $ipAddress,
+                'hostName' => $hostName,
+                'osTemplate' => $osTemplate,
+                'rootPassword' => $rootPassword
+            ]
         ], '', $this->living->getUriInstallerApi());
     }
 
@@ -49,10 +52,11 @@ class PXEManager
      */
     public function check($apiKey)
     {
-        return $this->living->post([
-            'action' => 'status',
-            'apiKey' => $apiKey,
-        ], '', $this->living->getUriInstallerApi());
+        return $this->living->getHttpClient()->post($this->living->getUriInstallerApi().'&action=status', [
+            RequestOptions::JSON => [
+                'apiKey' => $apiKey
+            ]
+        ]);
     }
 
     /**
@@ -60,7 +64,7 @@ class PXEManager
      */
     public function generateMacAddress()
     {
-        return '4e:65:06:'.implode(':', str_split(substr(md5(mt_rand()), 0, 6), 2));
+        return $this->living->getMacAddressPrefix().implode(':', str_split(substr(md5(mt_rand()), 0, 6), 2));
     }
 
 }
