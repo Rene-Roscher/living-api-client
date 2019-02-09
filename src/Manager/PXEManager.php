@@ -36,7 +36,7 @@ class PXEManager
      */
     public function create($macAddress, $ipAddress, $hostName, $osTemplate, $rootPassword)
     {
-        return $this->living->post([
+        return json_decode($this->living->getHttpClient()->post($this->living->getUriInstallerApi(), [
             RequestOptions::JSON => [
                 'macAddress' => $macAddress,
                 'ipAddress' => $ipAddress,
@@ -44,7 +44,7 @@ class PXEManager
                 'osTemplate' => $osTemplate,
                 'rootPassword' => $rootPassword
             ]
-        ], '', $this->living->getUriInstallerApi());
+        ])->getBody());
     }
 
     /**
@@ -52,11 +52,11 @@ class PXEManager
      */
     public function check($apiKey)
     {
-        return $this->living->getHttpClient()->post($this->living->getUriInstallerApi().'&action=status', [
+        return json_decode($this->living->getHttpClient()->post($this->living->getUriInstallerApi().'&action=status', [
             RequestOptions::JSON => [
                 'apiKey' => $apiKey
             ]
-        ]);
+        ])->getBody());
     }
 
     /**
